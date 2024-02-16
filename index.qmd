@@ -33,3 +33,5 @@ print("Hello World")
 $$
 \mathcal{N}(x; \mu, \sigma^2) = \dfrac{1}{\sqrt{2 \pi \sigma^2}} \exp \left({\dfrac{-(x - \mu)}{2\sigma^2}} \right)
 $$
+
+[Link to New Page](next.html)
