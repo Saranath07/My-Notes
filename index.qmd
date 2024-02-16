@@ -1,0 +1,32 @@
+---
+title: "Your Document Title"
+toc: true
+toc_float:
+  collapsed: false
+  smooth_scroll: false
+highlight-style: monokai
+---
+
+# Introduction
+
+This is the introduction section.
+
+# Section 1
+
+This is the first section.
+
+## Subsection 1.1
+
+This is the first subsection of the first section.
+
+# Section 2
+
+This is the second section.
+
+## Subsection 2.1
+
+This is the first subsection of the second section.
+
+```python
+print("Hello World")
+```
