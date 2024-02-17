@@ -1,20 +1,35 @@
 project:
   type: website
+  output-dir: docs
+
+css:
+  - https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap
+
+mainfont: PT Sans
+fontsize: 14pt
+highlight-style: "monokai"
 
 website:
-  title: "WebsiteProj"
-  navbar:
-    left:
+  title: "My Notes"
+  sidebar:
+    collapse-level: 1
+    style: "docked"
+    search: true
+    contents:
       - href: index.qmd
         text: Home
-      - about.qmd
-
+      - section: "Deep Learning"
+        contents: 
+          - href: pages/DL/IntroDL.md
+            text: Introduction to Deep Learning
+      - section: "Multi Armed Bandits"
+        contents: 
+          - href: pages/MAB/IntroMAB.md
+            text: Introduction to Multi-Armed Bandits
+         
 format:
   html:
-    theme: cosmo
-    css: styles.css
+    theme: 
+      light: [zephyr, styles_light.scss]
+      dark: [darkly, styles.scss]
     toc: true
-highlight-style: monokai
-
-
-

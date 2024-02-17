@@ -1,15 +1,9 @@
 ---
-title: "WebsiteProj"
+title: "My Notes"
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+I put the course notes for my own easy perusal.
 
 ```python
 print("Hello World")
 ```
-
-$$
-\sigma(x) = \dfrac{1}{1 + \exp(-\textbf{w}^Tx + \textbf{b})}
-$$
