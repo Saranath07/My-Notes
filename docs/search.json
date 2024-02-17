@@ -1,0 +1,23 @@
+[
+  {
+    "objectID": "pages/DL/IntroDL.html",
+    "href": "pages/DL/IntroDL.html",
+    "title": "Deep Learning",
+    "section": "",
+    "text": "This page is for Deep Learning\nfor i in range(5):\n    print(i)"
+  },
+  {
+    "objectID": "pages/MAB/IntroMAB.html",
+    "href": "pages/MAB/IntroMAB.html",
+    "title": "Introduction to Multi-Armed Bandits",
+    "section": "",
+    "text": "This page is for MAB"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "My Notes",
+    "section": "",
+    "text": "I put the course notes for my own easy perusal.\nprint(\"Hello World\")"
+  }
+]
