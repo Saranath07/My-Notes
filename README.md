@@ -1,2 +1,2 @@
-# BS-Degree-Course-Notes
-Notes for the BS Degree
+# My Notes 
+Notes for my own learning
