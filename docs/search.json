@@ -4,7 +4,11 @@
     "href": "pages/DL/IntroDL.html",
     "title": "Deep Learning",
     "section": "",
-    "text": "This page is for Deep Learning\nfor i in range(5):\n    print(i)"
+    "text": "This page is for Deep Learning\nfor i in range(5):\n    print(i)\nHere I will write Deep Learning stuffs",
+    "crumbs": [
+      "Deep Learning",
+      "Introduction to Deep Learning"
+    ]
   },
   {
     "objectID": "pages/MAB/IntroMAB.html",
@@ -18,6 +22,20 @@
     "href": "index.html",
     "title": "My Notes",
     "section": "",
-    "text": "I put the course notes for my own easy perusal.\nprint(\"Hello World\")"
+    "text": "I put the course notes for my own easy perusal.\nprint(\"Hello World\")",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "pages/LLM/Week5.html",
+    "href": "pages/LLM/Week5.html",
+    "title": "Week 5 LLM",
+    "section": "",
+    "text": "Week 5 LLM\nWeek 5 of the course LLM",
+    "crumbs": [
+      "Large Language Models",
+      "LLMs"
+    ]
   }
 ]

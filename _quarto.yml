@@ -26,6 +26,10 @@ website:
         contents: 
           - href: pages/MAB/IntroMAB.md
             text: Introduction to Multi-Armed Bandits
+      - section: "Large Language Models"
+        contents: 
+          - href: pages/LLM/Week5.md
+            text: LLMs
          
 format:
   html:
