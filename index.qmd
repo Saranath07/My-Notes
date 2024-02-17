@@ -1,37 +1,15 @@
 ---
-title: "Your Document Title"
-toc: true
-toc_float:
-  collapsed: false
-  smooth_scroll: false
-highlight-style: monokai
+title: "WebsiteProj"
 ---
 
-# Introduction
+This is a Quarto website.
 
-This is the introduction section.
-
-# Section 1
-
-This is the first section.
-
-## Subsection 1.1
-
-This is the first subsection of the first section.
-
-# Section 2
-
-This is the second section.
-
-## Subsection 2.1
-
-This is the first subsection of the second section.
+To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 
 ```python
 print("Hello World")
 ```
-$$
-\mathcal{N}(x; \mu, \sigma^2) = \dfrac{1}{\sqrt{2 \pi \sigma^2}} \exp \left({\dfrac{-(x - \mu)}{2\sigma^2}} \right)
-$$
 
-[Link to New Page](next.html)
+$$
+\sigma(x) = \dfrac{1}{1 + \exp(-\textbf{w}^Tx + \textbf{b})}
+$$
