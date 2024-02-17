@@ -2,7 +2,7 @@
 title: Backpropogation
 ---
 
-Backpropogation is a technique which is used to find the gradients of each layer with respect to the loss. We can write our loss function as:
+Backpropogation is a technique which is used to find the gradients of each layer with respect to the loss. We can write our output function as:
 
 $$
 \hat{y}_i = \hat{f}(x_i) = O(W_3 \ g(W_2 \ g(W_1 x_i + b_1) + b_2) + b_3)
