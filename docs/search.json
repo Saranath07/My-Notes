@@ -2,13 +2,9 @@
   {
     "objectID": "pages/DL/IntroDL.html",
     "href": "pages/DL/IntroDL.html",
-    "title": "Deep Learning",
+    "title": "Backpropogation",
     "section": "",
-    "text": "This page is for Deep Learning\nfor i in range(5):\n    print(i)\nHere I will write Deep Learning stuffs",
-    "crumbs": [
-      "Deep Learning",
-      "Introduction to Deep Learning"
-    ]
+    "text": "Backpropogation is a technique which is used to find the gradients of each layer with respect to the loss. We can write our loss function as:\n\\[\n\\hat{y}_i = \\hat{f}(x_i) = O(W_3 \\ g(W_2 \\ g(W_1 x_i + b_1) + b_2) + b_3)\n\\]\nThis is when we have 3 inputs, 2 hidden layers with 3 neurons in each and 1 output layer.\n\n\n\nExample Feed Forward Neural Network\n\n\nWe use the optimization algorithm Gradient Descent which can be used to traverse the loss function and get into the local minima.\nThe update rule goes like this:\n\\[\n\\theta_{t+1} = \\theta_{t} - \\eta \\nabla_{\\theta}\\mathcal{L}(\\theta)\n\\]\nwhere \\[\n\\begin{align*}\n\\theta  &  :     \\text{Parameters} \\\\\n\\eta & :  \\text{Learning Rate} \\\\\n\\nabla_{\\theta}\\mathcal{L}(\\theta) & : \\text{Gradient of loss function with respect to the parameters}.\n\\end{align*}\n\\]\nAs we have more parameters and functions, computation of gradient with respect to the parameters i.e. \\(\\nabla_{\\theta}\\mathcal{L}(\\theta)\\) is not straight forward.\nSo we depend on chain rule to get the solution.\nLet us try to compute just the loss with respect to \\(1\\) parameter.\n\\[\n\\dfrac{\\partial \\mathcal{L}(\\theta)}{\\partial W_{111}} = \\dfrac{\\partial \\mathcal{L}(\\theta)}{\\partial \\hat{y}}\\dfrac{\\partial \\hat{y}}{\\partial a_{L11}}\\dfrac{\\partial a_{L11}}{\\partial h_{21}}\\dfrac{\\partial h_{21}}{\\partial a_{21}}\\dfrac{\\partial a_{21}}{\\partial h_{11}}\\dfrac{\\partial h_{11}}{\\partial a_{11}}\\dfrac{\\partial a_{11}}{\\partial W_{111}}\n\\]"
   },
   {
     "objectID": "pages/MAB/IntroMAB.html",
@@ -22,20 +18,13 @@
     "href": "index.html",
     "title": "My Notes",
     "section": "",
-    "text": "I put the course notes for my own easy perusal.\nprint(\"Hello World\")",
-    "crumbs": [
-      "Home"
-    ]
+    "text": "I put the course notes for my own easy perusal.\nprint(\"Hello World\")"
   },
   {
     "objectID": "pages/LLM/Week5.html",
     "href": "pages/LLM/Week5.html",
     "title": "Week 5 LLM",
     "section": "",
-    "text": "Week 5 LLM\nWeek 5 of the course LLM",
-    "crumbs": [
-      "Large Language Models",
-      "LLMs"
-    ]
+    "text": "Week 5 LLM\nWeek 5 of the course LLM"
   }
 ]

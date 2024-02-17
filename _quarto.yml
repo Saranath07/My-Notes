@@ -21,7 +21,7 @@ website:
       - section: "Deep Learning"
         contents: 
           - href: pages/DL/IntroDL.md
-            text: Introduction to Deep Learning
+            text: Backpropogation
       - section: "Multi Armed Bandits"
         contents: 
           - href: pages/MAB/IntroMAB.md
