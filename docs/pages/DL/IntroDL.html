@@ -349,6 +349,16 @@ O(x_i) &amp; = \dfrac{e^{x_i}}{\sum_{j = 1}^{n}{x_j}}
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> L:</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        arr.append(np.exp(i) <span class="op">/</span> np.exp(L).<span class="bu">sum</span>())</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> arr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now we have to decide upon the loss function. Two best candidates for the loss functions are : <strong>Mean squared Loss</strong> and <strong>Cross Entropy Loss</strong>.</p>
+<p>Mean Squared loss is generally defined as: <span class="math display">\[
+MSE(\hat{y}, y)  = \dfrac{1}{n}(\hat{y} - y)^2
+\]</span></p>
+<p>and Cross entropy loss can be given as <span class="math display">\[
+CrossEntropy(\hat{y}, y) = -y\log(\hat{y})
+\]</span></p>
+<p>We will use cross entropy for this example and then we will also see a code for implementing mean squared loss</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cross_entropy(y_pred, y_true):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">-</span>(y_true <span class="op">@</span> np.log(y_pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 

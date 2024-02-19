@@ -116,4 +116,23 @@ def softmax(L):
     return arr
 ```
 
+Now we have to decide upon the loss function. 
+Two best candidates for the loss functions are : **Mean squared Loss** and **Cross Entropy Loss**. 
 
+Mean Squared loss is generally defined as:
+$$
+MSE(\hat{y}, y)  = \dfrac{1}{n}(\hat{y} - y)^2
+$$
+
+and Cross entropy loss can be given as
+$$
+CrossEntropy(\hat{y}, y) = -y\log(\hat{y})
+$$
+
+
+We will use cross entropy for this example and then we will also see a code for implementing mean squared loss
+
+```python
+def cross_entropy(y_pred, y_true):
+    return -(y_true @ np.log(y_pred))
+```
