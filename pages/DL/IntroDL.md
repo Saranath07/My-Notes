@@ -38,3 +38,19 @@ Let us try to compute just the loss with respect to $1$ parameter.
 $$
 \dfrac{\partial \mathcal{L}(\theta)}{\partial W_{111}} = \dfrac{\partial \mathcal{L}(\theta)}{\partial \hat{y}}\dfrac{\partial \hat{y}}{\partial a_{L11}}\dfrac{\partial a_{L11}}{\partial h_{21}}\dfrac{\partial h_{21}}{\partial a_{21}}\dfrac{\partial a_{21}}{\partial h_{11}}\dfrac{\partial h_{11}}{\partial a_{11}}\dfrac{\partial a_{11}}{\partial W_{111}}
 $$
+
+Before actually understanding this equation, let us see what each term refers to.
+
+$$
+\begin{align*}
+\mathcal{L}(\theta) & : \text{Loss function with respect to } \theta \\
+\hat{y} & : \text{Predicted } y \\
+h & : \text{Activation layer} \\
+a & : \text{Pre-activation layer}\\
+W & : \text{Weights} \\
+b & : \text{Biases}
+\end{align*}
+$$
+
+Now let us understand how to backpropogate.
+
