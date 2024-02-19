@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -266,7 +300,55 @@ W &amp; : \text{Weights} \\
 b &amp; : \text{Biases}
 \end{align*}
 \]</span></p>
-<p>Now let us understand how to backpropogate.</p>
+<p>Firstly, we have to forward propogate through layers. First of all we have to initialize <span class="math inline">\(W_1\)</span>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/Weights1.png" class="img-fluid figure-img"></p>
+<figcaption>Input Layer to First Hidden Layer</figcaption>
+</figure>
+</div>
+<p>Similarly we will do for other neurons.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/Weights2.png" class="img-fluid figure-img"></p>
+<figcaption>First Layer to Output Layer</figcaption>
+</figure>
+</div>
+<p>So, now let us try to write the equations for them.</p>
+<p>For the input layer to the hidden layer we have,</p>
+<p>First, we compute the values of pre-activation layer <span class="math inline">\(a_i\)</span>.</p>
+<p>Therefore, <span class="math display">\[
+a_1 = W_1  \textbf{x} + b_1
+\]</span> where <span class="math inline">\(\textbf{x} = \begin{bmatrix} x_1 \\ x_2 \\ x_3 \\ \vdots \\ x_n \end{bmatrix}, \textbf{b} = \begin{bmatrix} b_1 \\ b_2 \\ b_3 \\ \vdots \\ b_n \end{bmatrix}\)</span> and <span class="math inline">\(W_1 = \begin{bmatrix} w_{11} &amp; w_{12} &amp; \ldots &amp; w_{1n} \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ w_{1n} &amp; w_{2n} &amp; \ldots &amp; w_{nn}  \end{bmatrix}\)</span></p>
+<p>Here we have <span class="math inline">\(\textbf{x} \in \mathbb{R}^n\)</span> and <span class="math inline">\(W \in \mathbb{R}^{n \times n}\)</span>. (Note that all the layers have same number of neurons. If we have <span class="math inline">\(m\)</span> neurons in hidden layer and <span class="math inline">\(n\)</span> neurons in input layer, then we will have our weight matrix dimensions as <span class="math inline">\(\mathbb{R}^{m \times n}\)</span>)</p>
+<p>Now we have got values for the pre-activation layer. Now we have to intoduce the activation layer will be applied to every value in the pre-activation vector.</p>
+<p><span class="math display">\[
+h_1 = g(a_1)
+\]</span></p>
+<p>Then we will be performng this action for every layer.</p>
+<p>Now, as we have just 1 hidden layer in our example, we need to get the values for the output.</p>
+<p>Now we will use an output function and pass our hidden layer inputs to get the outputs. (This can potentially vary from the activation function.)</p>
+<p><span class="math display">\[
+\hat{y} = O(h_1)
+\]</span></p>
+<p>Now let us try to take an example for <span class="math inline">\(g\)</span> and <span class="math inline">\(O\)</span> functions.</p>
+<p>In this example we will use <span class="math display">\[
+\begin{align*}
+g(x_i) &amp; = \dfrac{1}{1 + e^{-x_i}} \\\\
+O(x_i) &amp; = \dfrac{e^{x_i}}{\sum_{j = 1}^{n}{x_j}}
+\end{align*}
+\]</span> We usually call <span class="math inline">\(g(x)\)</span> as sigmoid function adn <span class="math inline">\(O(x)\)</span> as softmax function</p>
+<p>So, we will use python to code them out.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sigmoid Function</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sigmoid(x):</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> np.exp(<span class="op">-</span>x))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Softmax Function</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> softmax(L):</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    arr <span class="op">=</span> []</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> L:</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        arr.append(np.exp(i) <span class="op">/</span> np.exp(L).<span class="bu">sum</span>())</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> arr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 

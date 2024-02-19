@@ -52,5 +52,68 @@ b & : \text{Biases}
 \end{align*}
 $$
 
-Now let us understand how to backpropogate.
+Firstly, we have to forward propogate through layers. First of all we have to initialize $W_1$. 
+
+![Input Layer to First Hidden Layer](/images/Weights1.png)
+
+Similarly we will do for other neurons.
+
+![First Layer to Output Layer](/images/Weights2.png)
+
+So, now let us try to write the equations for them.
+
+For the input layer to the hidden layer we have,
+
+First, we compute the values of pre-activation layer $a_i$. 
+
+Therefore, 
+$$
+a_1 = W_1  \textbf{x} + b_1
+$$
+where $\textbf{x} = \begin{bmatrix} x_1 \\ x_2 \\ x_3 \\ \vdots \\ x_n \end{bmatrix}, \textbf{b} = \begin{bmatrix} b_1 \\ b_2 \\ b_3 \\ \vdots \\ b_n \end{bmatrix}$ and $W_1 = \begin{bmatrix} w_{11} & w_{12} & \ldots & w_{1n} \\ \vdots & \vdots & \ddots & \vdots \\ w_{1n} & w_{2n} & \ldots & w_{nn}  \end{bmatrix}$
+
+Here we have $\textbf{x} \in \mathbb{R}^n$ and $W \in \mathbb{R}^{n \times n}$. (Note that all the layers have same number of neurons. If we have $m$ neurons in hidden layer and $n$ neurons in input layer, then we will have our weight matrix dimensions as $\mathbb{R}^{m \times n}$)
+
+Now we have got values for the pre-activation layer. Now we have to intoduce the activation layer will be applied to every value in the pre-activation vector.
+
+$$
+h_1 = g(a_1)
+$$
+
+Then we will be performng this action for every layer.
+
+Now, as we have just 1 hidden layer in our example, we need to get the values for the output. 
+
+Now we will use an output function and pass our hidden layer inputs to get the outputs. (This can potentially vary from the activation function.)
+
+$$
+\hat{y} = O(h_1)
+$$
+
+Now let us try to take an example for $g$ and $O$ functions.
+
+In this example we will use
+$$
+\begin{align*}
+g(x_i) & = \dfrac{1}{1 + e^{-x_i}} \\\\
+O(x_i) & = \dfrac{e^{x_i}}{\sum_{j = 1}^{n}{x_j}}
+\end{align*}
+$$
+We usually call $g(x)$ as sigmoid function adn $O(x)$ as softmax function
+
+So, we will use python to code them out.
+
+```python
+# Sigmoid Function
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+# Softmax Function
+def softmax(L):
+    arr = []
+    for i in L:
+        arr.append(np.exp(i) / np.exp(L).sum())
+    return arr
+```
+
 
