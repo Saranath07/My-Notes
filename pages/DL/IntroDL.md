@@ -136,3 +136,65 @@ We will use cross entropy for this example and then we will also see a code for 
 def cross_entropy(y_pred, y_true):
     return -(y_true @ np.log(y_pred))
 ```
+
+Generally we follow this table
+
+| **Task** | **Loss function** | **Output Function** |
+| ------- | ------ | ----- |
+| Regression | Mean Squared Loss | Linear |
+| Classification | Cross Entropy Loss | Softmax function |
+
+So, we will now use the backpropogation to update the parameters so that we can put them in our **Gradient Descent Algorithm**.
+
+First with the formula above, we can code the forward propogation.
+
+```python
+# Initialize parameters
+def initialize_parameters(inputs, hidden_layers, outputs):
+    parameters = {}
+    parameters["W1"] = np.random.rand(hidden_layers[0], inputs)
+    parameters["b1"] = np.random.rand(hidden_layers[0])
+    for i in range(1, len(hidden_layers)):
+        parameters[f"W{i+1}"] = np.random.rand(hidden_layers[i], hidden_layers[i - 1])
+        parameters[f"b{i+1}"] = np.random.rand(hidden_layers[i])
+    parameters[f"W{len(hidden_layers) + 1}"] = np.random.rand(outputs, hidden_layers[-1])
+    parameters[f"b{len(hidden_layers) + 1}"] = np.random.rand(outputs)
+    return parameters
+```
+Now, we can forward propogate.
+
+```python
+def forward_propogation(parameters, x, g, O):
+    activations = {}
+    activations["a1"] = parameters["W1"] @ x + parameters["b1"]
+    activations["h1"] = g(activations["a1"])
+    for i in range(2, len(parameters) // 2):
+        activations[f"a{i}"] = parameters[f"W{i}"] @ activations[f"h{i - 1}"] + parameters[f"b{i}"]
+        activations[f"h{i}"] = g(activations[f"a{i}"])
+
+    activations[f"a{len(parameters) // 2}"] = parameters[f"W{len(parameters) // 2}"] @ activations[f"h{len(parameters) // 2 - 1}"] + parameters[f"b{len(parameters) // 2}"]
+    y_pred = O(activations[f"a{len(parameters) // 2}"])
+    return y_pred, activations
+```
+
+## Talking to the Output Layer
+
+So we should calculate the loss with respect to the output layer.
+
+$$
+\dfrac{\partial \mathcal{L}(\theta)}{\partial \hat{y}} = \dfrac{\partial \ Cross Entropy (y, \hat{y})}{\partial \hat{y}}
+$$
+
+Imagine we have a binary classification problem which just outputs $0$ or $1$. So our Cross entropy function can be given as :
+$$
+CrossEntropy(y, \hat{y}) = -\log{\hat{y}}
+$$
+
+Now we have to calculate the partial derivative. 
+So we can write,
+$$
+\begin{align*}
+\dfrac{\partial (-\log(\hat{y}))}{\partial \hat{y}} & = \dfrac{\mathbb{I}_l}{\hat{y}}
+\end{align*}
+$$
+We know that $\hat{y}$ is a one hot vector as we will have only one class to be true. So $\mathbb{I}_l$ is the vector where it has $1$ at $l^{th}$ position and rest are all $0$s

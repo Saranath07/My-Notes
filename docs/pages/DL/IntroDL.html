@@ -236,7 +236,13 @@ window.Quarto = {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#talking-to-the-output-layer" id="toc-talking-to-the-output-layer" class="nav-link active" data-scroll-target="#talking-to-the-output-layer">Talking to the Output Layer</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -359,8 +365,70 @@ CrossEntropy(\hat{y}, y) = -y\log(\hat{y})
 <p>We will use cross entropy for this example and then we will also see a code for implementing mean squared loss</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cross_entropy(y_pred, y_true):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">-</span>(y_true <span class="op">@</span> np.log(y_pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Generally we follow this table</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th><strong>Task</strong></th>
+<th><strong>Loss function</strong></th>
+<th><strong>Output Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Regression</td>
+<td>Mean Squared Loss</td>
+<td>Linear</td>
+</tr>
+<tr class="even">
+<td>Classification</td>
+<td>Cross Entropy Loss</td>
+<td>Softmax function</td>
+</tr>
+</tbody>
+</table>
+<p>So, we will now use the backpropogation to update the parameters so that we can put them in our <strong>Gradient Descent Algorithm</strong>.</p>
+<p>First with the formula above, we can code the forward propogation.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize parameters</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> initialize_parameters(inputs, hidden_layers, outputs):</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    parameters <span class="op">=</span> {}</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    parameters[<span class="st">"W1"</span>] <span class="op">=</span> np.random.rand(hidden_layers[<span class="dv">0</span>], inputs)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    parameters[<span class="st">"b1"</span>] <span class="op">=</span> np.random.rand(hidden_layers[<span class="dv">0</span>])</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(hidden_layers)):</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        parameters[<span class="ss">f"W</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>] <span class="op">=</span> np.random.rand(hidden_layers[i], hidden_layers[i <span class="op">-</span> <span class="dv">1</span>])</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        parameters[<span class="ss">f"b</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>] <span class="op">=</span> np.random.rand(hidden_layers[i])</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    parameters[<span class="ss">f"W</span><span class="sc">{</span><span class="bu">len</span>(hidden_layers) <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>] <span class="op">=</span> np.random.rand(outputs, hidden_layers[<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    parameters[<span class="ss">f"b</span><span class="sc">{</span><span class="bu">len</span>(hidden_layers) <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>] <span class="op">=</span> np.random.rand(outputs)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> parameters</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now, we can forward propogate.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward_propogation(parameters, x, g, O):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    activations <span class="op">=</span> {}</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    activations[<span class="st">"a1"</span>] <span class="op">=</span> parameters[<span class="st">"W1"</span>] <span class="op">@</span> x <span class="op">+</span> parameters[<span class="st">"b1"</span>]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    activations[<span class="st">"h1"</span>] <span class="op">=</span> g(activations[<span class="st">"a1"</span>])</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="bu">len</span>(parameters) <span class="op">//</span> <span class="dv">2</span>):</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        activations[<span class="ss">f"a</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>] <span class="op">=</span> parameters[<span class="ss">f"W</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>] <span class="op">@</span> activations[<span class="ss">f"h</span><span class="sc">{</span>i <span class="op">-</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>] <span class="op">+</span> parameters[<span class="ss">f"b</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>]</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        activations[<span class="ss">f"h</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>] <span class="op">=</span> g(activations[<span class="ss">f"a</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>])</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    activations[<span class="ss">f"a</span><span class="sc">{</span><span class="bu">len</span>(parameters) <span class="op">//</span> <span class="dv">2</span><span class="sc">}</span><span class="ss">"</span>] <span class="op">=</span> parameters[<span class="ss">f"W</span><span class="sc">{</span><span class="bu">len</span>(parameters) <span class="op">//</span> <span class="dv">2</span><span class="sc">}</span><span class="ss">"</span>] <span class="op">@</span> activations[<span class="ss">f"h</span><span class="sc">{</span><span class="bu">len</span>(parameters) <span class="op">//</span> <span class="dv">2</span> <span class="op">-</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>] <span class="op">+</span> parameters[<span class="ss">f"b</span><span class="sc">{</span><span class="bu">len</span>(parameters) <span class="op">//</span> <span class="dv">2</span><span class="sc">}</span><span class="ss">"</span>]</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> O(activations[<span class="ss">f"a</span><span class="sc">{</span><span class="bu">len</span>(parameters) <span class="op">//</span> <span class="dv">2</span><span class="sc">}</span><span class="ss">"</span>])</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y_pred, activations</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="talking-to-the-output-layer" class="level2">
+<h2 class="anchored" data-anchor-id="talking-to-the-output-layer">Talking to the Output Layer</h2>
+<p>So we should calculate the loss with respect to the output layer.</p>
+<p><span class="math display">\[
+\dfrac{\partial \mathcal{L}(\theta)}{\partial \hat{y}} = \dfrac{\partial \ Cross Entropy (y, \hat{y})}{\partial \hat{y}}
+\]</span></p>
+<p>Imagine we have a binary classification problem which just outputs <span class="math inline">\(0\)</span> or <span class="math inline">\(1\)</span>. So our Cross entropy function can be given as : <span class="math display">\[
+CrossEntropy(y, \hat{y}) = -\log{\hat{y}}
+\]</span></p>
+<p>Now we have to calculate the partial derivative. So we can write, <span class="math display">\[
+\begin{align*}
+\dfrac{\partial (-\log(\hat{y}))}{\partial \hat{y}} &amp; = \dfrac{\mathbb{I}_l}{\hat{y}}
+\end{align*}
+\]</span> We know that <span class="math inline">\(\hat{y}\)</span> is a one hot vector as we will have only one class to be true. So <span class="math inline">\(\mathbb{I}_l\)</span> is the vector where it has <span class="math inline">\(1\)</span> at <span class="math inline">\(l^{th}\)</span> position and rest are all <span class="math inline">\(0\)</span>s</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
